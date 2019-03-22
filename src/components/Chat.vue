@@ -28,7 +28,11 @@ export default {
       bus.$emit('user-connected', { id: 8943245, username: 'pablo' })
     })
 
-    bus.$on('new-message', (message) => {
+    bus.$on('user-rooms', function(rooms) {
+
+    })
+
+    bus.$on('new-message', (room, message) => {
       this.messages.push(message)
     })
   },
