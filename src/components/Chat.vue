@@ -23,7 +23,11 @@ export default {
     }
   },
   mounted() {
-    bus.$emit('user-connected', { id: 8943245, username: 'pablo' })
+    bus.$on('connection', function() {
+      console.log('Connected succesfully')
+      bus.$emit('user-connected', { id: 8943245, username: 'pablo' })
+    })
+
     bus.$on('new-message', (message) => {
       this.messages.push(message)
     })

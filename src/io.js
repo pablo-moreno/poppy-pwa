@@ -14,6 +14,10 @@ io.on('new-message', function(message) {
   bus.$emit('new-message', 'my-room-1', message)
 })
 
+io.on('new-user-connected', function() {
+  bus.$emit('connection')
+})
+
 // Client-emitted events
 bus.$on('user-connected', function(user) {
   console.log('bus emitted user-connected')
