@@ -5,8 +5,8 @@
       {{ chat.name }}
     </li>
   </ul>
-  <ul>
-    <li v-for="(message, index) in messages" :key="index">
+  <ul v-if="currentRoom">
+    <li v-for="(message, index) in messages[currentRoom._id]" :key="index">
       {{ message.text }}
     </li>
   </ul>
@@ -23,29 +23,30 @@ import bus from '../EventBus'
 export default {
   data() {
     return {
-      messages: [],
+      messages: {},
       message: '',
       currentRoom: undefined
     }
   },
-  mounted() {
+  beforeMount() {
     bus.$on('connection', function() {
-      console.log('Connected succesfully')
       bus.$emit('user-connected', { _id: '5c97748bb9619f00291ae453', username: 'pablo' })
     })
 
     bus.$on('user-rooms', (rooms) => {
-      console.log('bus user-rooms: ', rooms)
+      rooms.forEach(room => {
+        bus.$emit('subscribe', room._id)
+        this.messages[room._id] = []
+      })
       this.$store.dispatch('setChats', rooms)
     })
 
-    bus.$on('new-message', (room, message) => {
-      this.messages.push(message)
+    bus.$on('new-message', (message) => {
+      this.messages[message.room].push(message)
     })
   },
   methods: {
     sendMessage() {
-      console.log('New message sent: ', this.message)
       const newMessage = { 
         text: this.message,
         user: {
