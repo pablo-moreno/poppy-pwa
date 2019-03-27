@@ -5,7 +5,8 @@
       {{ chat.name }}
     </li>
   </ul>
-  <ul v-if="currentRoom">
+  <h4 v-if="currentRoom">{{ currentRoom.name }}</h4>
+  <ul v-if="currentRoom !== null">
     <li v-for="(message, index) in messages[currentRoom._id]" :key="index">
       {{ message.text }}
     </li>
@@ -25,7 +26,7 @@ export default {
     return {
       messages: {},
       message: '',
-      currentRoom: undefined
+      currentRoom: null
     }
   },
   beforeMount() {
@@ -42,7 +43,7 @@ export default {
     })
 
     bus.$on('new-message', (message) => {
-      this.messages[message.room].push(message)
+      this.addMessage(message)
     })
   },
   methods: {
@@ -59,6 +60,15 @@ export default {
     },
     setCurrentChat(chat) {
       this.currentRoom = chat
+    },
+    addMessage(message) {
+      this.messages = {
+        ...this.messages,
+        [message.room]: [
+          ...this.messages[message.room], 
+          message
+        ],
+      }
     }
   }
 }
