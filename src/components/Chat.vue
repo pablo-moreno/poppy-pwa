@@ -33,10 +33,7 @@ export default {
     bus.$emit('user-connected', this.$store.state.auth.user)
 
     bus.$on('user-rooms', (rooms) => {
-      rooms.forEach(room => {
-        bus.$emit('subscribe', room._id)
-        this.messages[room._id] = []
-      })
+      bus.$emit('subscribe', rooms.map(room => room._id))
       this.$store.dispatch('setChats', rooms)
     })
 
