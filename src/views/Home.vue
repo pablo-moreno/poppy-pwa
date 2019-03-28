@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import Chat from "@/components/Chat.vue"
+import Chat from '@/components/Chat'
 
 export default {
-  name: "home",
+  name: 'home',
   components: {
     Chat
   }

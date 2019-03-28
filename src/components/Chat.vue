@@ -30,9 +30,7 @@ export default {
     }
   },
   beforeMount() {
-    bus.$on('connection', function() {
-      bus.$emit('user-connected', { _id: '5c97748bb9619f00291ae453', username: 'pablo' })
-    })
+    bus.$emit('user-connected', this.$store.state.auth.user)
 
     bus.$on('user-rooms', (rooms) => {
       rooms.forEach(room => {
@@ -48,11 +46,10 @@ export default {
   },
   methods: {
     sendMessage() {
+      const { user } = this.$store.state.auth
       const newMessage = { 
         text: this.message,
-        user: {
-          _id: '5c97748bb9619f00291ae453'
-        },
+        user: user,
         room: this.currentRoom
       }
       bus.$emit('post-message', newMessage)
@@ -75,11 +72,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.chat {
 
-}
-.chats {
-}
-.messages {
-}
 </style>
