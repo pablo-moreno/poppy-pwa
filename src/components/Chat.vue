@@ -8,7 +8,7 @@
   <h4 v-if="currentRoom">{{ currentRoom.name }}</h4>
   <ul v-if="currentRoom !== null">
     <li v-for="(message, index) in messages[currentRoom._id]" :key="index">
-      {{ message.text }}
+      {{ message.user.username }}: {{ message.text }}
     </li>
   </ul>
   <form @submit.prevent="sendMessage">
@@ -34,6 +34,7 @@ export default {
 
     bus.$on('user-rooms', (rooms) => {
       bus.$emit('subscribe', rooms.map(room => room._id))
+      rooms.forEach(room => this.messages[room._id] = [])
       this.$store.dispatch('setChats', rooms)
     })
 
