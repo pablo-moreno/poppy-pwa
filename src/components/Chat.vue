@@ -1,13 +1,13 @@
 <template>
 <div class="chat">
   <ul>
-    <li v-for="chat in $store.state.chats" :key="`chat-${chat._id}`" @click="setCurrentChat(chat)">
+    <li v-for="chat in chats" :key="`chat-${chat.id}`" @click="setCurrentChat(chat)">
       {{ chat.name }}
     </li>
   </ul>
-  <h4 v-if="currentRoom">{{ currentRoom.name }}</h4>
+  <h4 v-if="currentRoom">{{ chats[currentRoom].name }}</h4>
   <ul v-if="currentRoom !== null">
-    <li v-for="(message, index) in messages[currentRoom._id]" :key="index">
+    <li v-for="(message, index) in currentRoomMessages" :key="index">
       {{ message.user.username }}: {{ message.text }}
     </li>
   </ul>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import bus from '../EventBus'
 
 export default {
@@ -32,12 +33,20 @@ export default {
       currentRoom: null
     }
   },
+  computed: {
+    ...mapState({
+      chats: state => state.chats,
+      currentRoomMessages() { 
+        return this.chats[this.currentRoom].messages
+      },
+      user: state => state.auth.user
+    }),
+  },
   beforeMount() {
-    bus.$emit('user-connected', this.$store.state.auth.user)
+    bus.$emit('user-connected', this.user)
 
-    bus.$on('user-rooms', (rooms) => {
+    bus.$once('user-rooms', (rooms) => {
       bus.$emit('subscribe', rooms.map(room => room._id))
-      rooms.forEach(room => this.messages[room._id] = [])
       this.$store.dispatch('setChats', rooms)
     })
 
@@ -47,26 +56,18 @@ export default {
   },
   methods: {
     sendMessage() {
-      const { user } = this.$store.state.auth
       const newMessage = { 
         text: this.message,
-        user: user,
-        room: this.currentRoom._id
+        user: this.user,
+        room: this.currentRoom
       }
       bus.$emit('post-message', newMessage)
       this.message = ''
     },
     setCurrentChat(chat) {
-      this.currentRoom = chat
+      this.currentRoom = chat.id
     },
     addMessage(message) {
-      this.messages = {
-        ...this.messages,
-        [message.room]: [
-          ...this.messages[message.room], 
-          message
-        ],
-      }
       this.$store.dispatch('addMessage', message)
     }
   }

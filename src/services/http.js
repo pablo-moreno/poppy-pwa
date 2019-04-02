@@ -171,7 +171,7 @@ export default class Http extends BaseHttp {
 
   handleError(error) {
     if (error.response && error.response.status === 401) {
-      store.dispatch(STORE_LOGOUT)
+      store.dispatch('logout')
     }
   }
 

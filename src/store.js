@@ -38,7 +38,12 @@ export default new Vuex.Store({
     },
     addMessage(state, message) {
       const { room } = message
-      state.chats[message.room].push(message)
+      // const { chats } = state
+      state.chats[room].messages.push(message)
+
+      // state.chats = {
+      //   ...chats,
+      // }
     }
   },
   actions: {

@@ -1,14 +1,17 @@
 <template>
   <div class="login-view">
     <form class="login-form" @submit.prevent="login">
-      <input v-model="email" class="input-field" type="email">
-      <input v-model="password" class="input-field" type="password">
+      <input v-model="email" class="input-field" type="email" placeholder="User name">
+      <input v-model="password" class="input-field" type="password" placeholder="Password">
       <button class="button">
         Log in!
       </button>
       <router-link :to="{name: 'signup'}">
         You don't already have an account? Sign up here!
       </router-link>
+      <span>
+        {{ error }}
+      </span>
     </form>
   </div>
 </template>
@@ -24,6 +27,7 @@ export default {
   },
   methods: {
     async login() {
+      console.log('login')
       try {
         const { email, password } = this
         const user = await this.$http.post('auth/login', { email, password })

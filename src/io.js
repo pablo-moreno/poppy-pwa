@@ -34,3 +34,11 @@ bus.$on('subscribe', function(room) {
   console.log('Subscribe to room: ', room)
   io.emit('subscribe', room)
 })
+
+bus.$on('user-start-writing', function(user, room) {
+  io.emit('user-start-writing', user, room)
+})
+
+bus.$on('user-stop-writing', function(user, room) {
+  io.emit('user-stop-writing', user, room)
+})
