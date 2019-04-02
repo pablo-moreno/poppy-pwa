@@ -1,5 +1,14 @@
-import Vue from "vue"
-import Vuex from "vuex"
+import Vue from 'vue'
+import Vuex from 'vuex'
+import VuexPersist from 'vuex-persist'
+
+const vuexPersist = new VuexPersist({
+  key: 'chat',
+  storage: localStorage,
+  reducer: state => ({
+    auth: state.auth
+  })
+})
 
 Vue.use(Vuex)
 
@@ -31,5 +40,8 @@ export default new Vuex.Store({
     setChats({ commit }, chats) {
       commit('setChats', chats)
     }
-  }
+  },
+  plugins: [
+    vuexPersist.plugin
+  ]
 })
