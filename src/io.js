@@ -1,7 +1,9 @@
 import sio from 'socket.io-client'
 import bus from './EventBus'
 
-const io = sio(`${process.env.VUE_APP_API_URL}:${process.env.VUE_APP_SOCKETIO_PORT}`)
+const { VUE_APP_API_URL, VUE_APP_SOCKETIO_PORT } = process.env
+
+const io = sio(`${VUE_APP_API_URL}:${VUE_APP_SOCKETIO_PORT}`)
 
 // Server-emitted events
 io.on('user-rooms', function(rooms) {
@@ -30,9 +32,14 @@ bus.$on('post-message', function(message) {
   io.emit('post-message', message)
 })
 
-bus.$on('subscribe', function(room) {
-  console.log('Subscribe to room: ', room)
-  io.emit('subscribe', room)
+bus.$on('subscribe', function(rooms) {
+  console.log('Subscribe to room: ', rooms)
+  io.emit('subscribe', rooms)
+})
+
+bus.$on('unsubscribe', function(rooms) {
+  console.log('Subscribe to room: ', rooms)
+  io.emit('unsubscribe', rooms)
 })
 
 bus.$on('user-start-writing', function(user, room) {

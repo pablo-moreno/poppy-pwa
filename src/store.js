@@ -5,6 +5,8 @@ import VuexPersist from 'vuex-persist'
 const vuexPersist = new VuexPersist({
   key: 'chat',
   storage: localStorage,
+
+  // Persistance reducer
   reducer: state => ({
     auth: state.auth
   })
@@ -38,12 +40,20 @@ export default new Vuex.Store({
     },
     addMessage(state, message) {
       const { room } = message
-      // const { chats } = state
-      state.chats[room].messages.push(message)
-
-      // state.chats = {
-      //   ...chats,
-      // }
+      const { chats } = state
+      const roomMessages = [
+        ...chats[room].messages,
+        message
+      ]
+      const updatedChat = {
+        ...chats[room],
+        messages: roomMessages
+      }
+      
+      state.chats = {
+        ...state.chats,
+        [room]: updatedChat
+      }
     }
   },
   actions: {

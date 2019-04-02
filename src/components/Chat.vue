@@ -42,17 +42,22 @@ export default {
       user: state => state.auth.user
     }),
   },
-  beforeMount() {
+  mounted() {
     bus.$emit('user-connected', this.user)
 
-    bus.$once('user-rooms', (rooms) => {
+    bus.$on('user-rooms', (rooms) => {
       bus.$emit('subscribe', rooms.map(room => room._id))
       this.$store.dispatch('setChats', rooms)
     })
 
     bus.$on('new-message', (message) => {
-      this.addMessage(message)
+      console.log('We have received a new message', message)
+      this.$store.dispatch('addMessage', message)
     })
+  },
+  beforeDestroy() {
+    bus.$off('new-message')
+    bus.$off('user-rooms')
   },
   methods: {
     sendMessage() {
@@ -67,9 +72,6 @@ export default {
     setCurrentChat(chat) {
       this.currentRoom = chat.id
     },
-    addMessage(message) {
-      this.$store.dispatch('addMessage', message)
-    }
   }
 }
 </script>
