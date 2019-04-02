@@ -11,10 +11,13 @@
       {{ message.user.username }}: {{ message.text }}
     </li>
   </ul>
-  <form @submit.prevent="sendMessage">
+  <form @submit.prevent="sendMessage" v-if="currentRoom !== null">
     <input type="text" name="new-message" v-model="message">
     <button :disabled="message === ''">Send</button>
   </form>
+  <div v-else>
+    You haven't selected any conversation yet.
+  </div>
 </div>
 </template>
 
@@ -48,7 +51,7 @@ export default {
       const newMessage = { 
         text: this.message,
         user: user,
-        room: this.currentRoom
+        room: this.currentRoom._id
       }
       bus.$emit('post-message', newMessage)
       this.message = ''
