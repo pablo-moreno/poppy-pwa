@@ -6,6 +6,9 @@
       <button class="button">
         Log in!
       </button>
+      <router-link :to="{name: 'signup'}">
+        You don't already have an account? Sign up here!
+      </router-link>
     </form>
   </div>
 </template>
@@ -35,5 +38,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.login-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+form {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+}
+
+input {
+  padding: .5em;
+  border: solid 1px #eaeaea;
+  border-radius: 8px;
+  margin-bottom: .25em;
+  font-size: 1rem;
+}
 </style>

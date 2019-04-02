@@ -5,6 +5,12 @@
 </template>
 
 <style lang="scss">
+@import '@/assets/css/index.scss';
+
+body {
+  font-size: 16px;
+}
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -1,7 +1,7 @@
 import sio from 'socket.io-client'
 import bus from './EventBus'
 
-const io = sio('http://localhost:6226')
+const io = sio(`${process.env.VUE_APP_API_URL}:${process.env.VUE_APP_SOCKETIO_PORT}`)
 
 // Server-emitted events
 io.on('user-rooms', function(rooms) {

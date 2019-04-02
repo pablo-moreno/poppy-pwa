@@ -1,4 +1,9 @@
 import Home from './Home'
-import LoginView from './LoginView'
+import LoginView from './Login'
+import SignUpView from './SignUp'
 
-export { Home, LoginView }
+export { 
+  Home,
+  LoginView,
+  SignUpView
+}

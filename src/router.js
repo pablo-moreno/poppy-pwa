@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import { Home, LoginView } from './views'
+import { Home, LoginView, SignUpView } from './views'
 import store from './store'
 
 Vue.use(Router);
@@ -20,7 +20,7 @@ const router = new Router({
     {
       path: '/sign-up',
       name: 'signup',
-      component: LoginView,
+      component: SignUpView,
       meta: {
         protected: false
       }

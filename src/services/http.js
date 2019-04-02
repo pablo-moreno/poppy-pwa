@@ -156,7 +156,7 @@ export class BaseHttp {
 
 export default class Http extends BaseHttp {
   BASE_URL = process.env.VUE_APP_BASE_URL
-  API_URL = 'http://localhost:8888'
+  API_URL = `${process.env.VUE_APP_API_URL}:${process.env.VUE_APP_HTTP_PORT}`
   HTTP_AUTHORIZATION_HEADER = 'x-auth'
   LOGIN_URL = `${this.API_URL}/auth/login`
   SIGN_UP_URL = `${this.API_URL}/auth/sign-up`
