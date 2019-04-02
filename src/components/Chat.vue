@@ -67,6 +67,7 @@ export default {
           message
         ],
       }
+      this.$store.dispatch('addMessage', message)
     }
   }
 }

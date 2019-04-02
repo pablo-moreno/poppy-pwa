@@ -14,7 +14,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    chats: [],
+    chats: {},
     auth: {
       user: undefined,
     }
@@ -27,7 +27,18 @@ export default new Vuex.Store({
       state.auth.user = undefined
     },
     setChats(state, chats) {
-      state.chats = chats
+      chats.forEach(chat => {
+        const { _id, name,  } = chat
+        state.chats[chat._id] = {
+          id: _id,
+          name,
+          messages: [],
+        }
+      })
+    },
+    addMessage(state, message) {
+      const { room } = message
+      state.chats[message.room].push(message)
     }
   },
   actions: {
@@ -39,6 +50,9 @@ export default new Vuex.Store({
     },
     setChats({ commit }, chats) {
       commit('setChats', chats)
+    },
+    addMessage({ commit }, message) {
+      commit('addMessage', message)
     }
   },
   plugins: [
