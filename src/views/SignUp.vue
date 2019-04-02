@@ -1,15 +1,18 @@
 <template>
   <div class="sign-up-view">
     <form @submit.prevent="signUp">
-      <input type="text" v-model="username" id="username">
-      <input type="password" v-model="password" id="password">
-      <input type="password" v-model="password2" id="password2">
-      <input type="email" v-model="email" id="email">
-      <input type="text" v-model="firstName" id="firstName">
-      <input type="text" v-model="lastName" id="lastName">
+      <input type="text" v-model="user.username" id="username" placeholder="User name" required>
+      <input type="password" v-model="user.password" id="password" placeholder="Password" required>
+      <input type="password" v-model="user.password2" id="password2" placeholder="Repeat password" required>
+      <input type="email" v-model="user.email" id="email" placeholder="E-mail" required>
+      <input type="text" v-model="user.firstName" id="firstName" placeholder="First name">
+      <input type="text" v-model="user.lastName" id="lastName" placeholder="Last name">
       <button>
       Create account!
       </button>
+      <router-link :to="{name: 'login'}">
+        Already have an account? Sign in!
+      </router-link>
     </form>
   </div>
 </template>
@@ -18,12 +21,25 @@
 export default {
   data() {
     return {
-      username: '',
-      password: '',
-      password2: '',
-      email: '',
-      firstName: '',
-      lastName: ''
+      user: {
+        username: '',
+        password: '',
+        password2: '',
+        email: '',
+        firstName: '',
+        lastName: ''
+      }
+    }
+  },
+  methods: {
+    async signUp() {
+      try {
+        const user = this.user
+        const response = await this.$http.post('auth/sign-up', user)
+        this.$router.push('login')
+      } catch (error) {
+        console.log('error', error)
+      }
     }
   }
 }

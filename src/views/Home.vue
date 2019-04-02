@@ -3,7 +3,7 @@
     <nav>
       {{ user.firstName }} {{ user.lastName }}
     </nav>
-    <span @click="logout">
+    <span @click="logout" class="logout">
       Logout!
     </span>
     <chat />
@@ -29,3 +29,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.logout {
+  cursor: pointer;
+}
+</style>
