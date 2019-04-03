@@ -1,24 +1,24 @@
 <template>
-<div class="chat">
-  <ul>
-    <li v-for="chat in chats" :key="`chat-${chat.id}`" @click="setCurrentChat(chat)">
-      {{ chat.name }}
-    </li>
-  </ul>
-  <h4 v-if="currentRoom">{{ chats[currentRoom].name }}</h4>
-  <ul v-if="currentRoom !== null">
-    <li v-for="(message, index) in currentRoomMessages" :key="index">
-      {{ message.user.username }}: {{ message.text }}
-    </li>
-  </ul>
-  <form @submit.prevent="sendMessage" v-if="currentRoom !== null">
-    <input type="text" name="new-message" v-model="message">
-    <button :disabled="message === ''">Send</button>
-  </form>
-  <div v-else>
-    You haven't selected any conversation yet.
+  <div class="chat">
+    <ul>
+      <li v-for="chat in chats" :key="`chat-${chat.id}`" @click="setCurrentChat(chat)">
+        {{ chat.name }}
+      </li>
+    </ul>
+    <h4 v-if="currentRoom">{{ chats[currentRoom].name }}</h4>
+    <ul v-if="currentRoom !== null">
+      <li v-for="(message, index) in currentRoomMessages" :key="index">
+        {{ message.user.username }}: {{ message.text }}
+      </li>
+    </ul>
+    <form @submit.prevent="sendMessage" v-if="currentRoom !== null">
+      <input type="text" name="new-message" v-model="message">
+      <button :disabled="message === ''">Send</button>
+    </form>
+    <div v-else>
+      You haven't selected any conversation yet.
+    </div>
   </div>
-</div>
 </template>
 
 <script>
