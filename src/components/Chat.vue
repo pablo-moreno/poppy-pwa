@@ -68,6 +68,7 @@ export default {
 
   .chat-list {
     width: 35%;
+    border-right: solid 1px #eaeaea;
   }
 
   .chat-messages {

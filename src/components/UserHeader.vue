@@ -1,11 +1,16 @@
 <template>
-  <div>
-    <nav>
-      {{ user.firstName }} {{ user.lastName }}
-    </nav>
-    <span @click="logout" class="logout">
-      Logout!
-    </span>
+  <div class="user-header">
+    <h2>
+      {{ user.firstName }}
+    </h2>
+    <div class="user-header-buttons">
+      <button @click="logout" class="ripple">
+        <i class="fa fa-cog"></i>
+      </button>
+      <button @click="logout" class="ripple">
+        <i class="fa fa-sign-out-alt"></i>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -23,3 +28,34 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '@/assets/css/utils/_colors.scss';
+
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  background-color: $primary-dark;
+  align-items: center;
+
+  &-buttons {
+    display: flex;
+  }
+
+  h2 {
+    color: white;
+  }
+}
+
+button {
+  width: 16px;
+  height: 16px;
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin-left: 8px;
+}
+</style>

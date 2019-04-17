@@ -3,7 +3,7 @@
     <form class="login-form" @submit.prevent="login">
       <input v-model="email" class="input-field" type="email" placeholder="User name">
       <input v-model="password" class="input-field" type="password" placeholder="Password">
-      <button class="button">
+      <button class="ripple">
         Log in!
       </button>
       <router-link :to="{name: 'signup'}">
