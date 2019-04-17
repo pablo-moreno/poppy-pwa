@@ -2,7 +2,6 @@ import sio from 'socket.io-client'
 import bus from './EventBus'
 
 const { VUE_APP_API_URL, VUE_APP_SOCKETIO_PORT } = process.env
-
 const io = sio(`${VUE_APP_API_URL}:${VUE_APP_SOCKETIO_PORT}`)
 
 // Server-emitted events

@@ -7,8 +7,14 @@
 <style lang="scss">
 @import '@/assets/css/index.scss';
 
-body {
+html, body {
   font-size: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
 }
 
 #app {

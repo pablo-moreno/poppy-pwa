@@ -16,7 +16,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    chats: {},
+    chats: [],
     auth: {
       user: undefined,
     }
@@ -29,31 +29,21 @@ export default new Vuex.Store({
       state.auth.user = undefined
     },
     setChats(state, chats) {
-      chats.forEach(chat => {
-        const { _id, name,  } = chat
-        state.chats[chat._id] = {
-          id: _id,
-          name,
-          messages: [],
-        }
-      })
+      state.chats = chats.map(chat => ({
+        id: chat._id,
+        name: chat.name,
+        messages: []
+      }))
     },
-    addMessage(state, message) {
-      const { room } = message
-      const { chats } = state
-      const roomMessages = [
-        ...chats[room].messages,
-        message
+    addMessage(state, msg) {
+      const { message, room } = msg
+      const [chat] = state.chats.filter(c => c.id === room)
+      chat.messages.push(message)
+
+      state.chats = [
+        chat,
+        ...state.chats.filter(c => c.id !== room),
       ]
-      const updatedChat = {
-        ...chats[room],
-        messages: roomMessages
-      }
-      
-      state.chats = {
-        ...state.chats,
-        [room]: updatedChat
-      }
     }
   },
   actions: {

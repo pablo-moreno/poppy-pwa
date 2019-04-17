@@ -1,13 +1,14 @@
 <template>
   <div class="chat-list-view-item">
     <div>
-      {{ name }}
+      {{ chat.name }}
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+
 export default {
   props: {
     chat: {
@@ -23,11 +24,11 @@ export default {
       const { name, group, users } = this.chat
       let chatName = group ? name : ''
       if (! group) {
-        let [otherUser] = users.filter(user => user._id !== this.user._id)
+        let [otherUser] = users.filter(user => user.id !== this.user.id)
         chatName = otherUser.username
       }
       return chatName
-      }
     }
+  }
 }
 </script>
