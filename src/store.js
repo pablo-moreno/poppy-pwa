@@ -32,7 +32,8 @@ export default new Vuex.Store({
       state.chats = chats.map(chat => ({
         id: chat._id,
         name: chat.name,
-        messages: []
+        messages: [],
+        users: chat.users
       }))
     },
     addMessage(state, msg) {

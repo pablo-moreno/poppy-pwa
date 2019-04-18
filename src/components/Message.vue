@@ -1,14 +1,21 @@
 <template>
   <li class="message" :class="{'mine': mine}">
-    <span class="message-text">
-      {{ message.text }}
-    </span>
-    <span class="message-date">
-      {{ date | format }}
-    </span>
-    <span class="message-status">
-      
-    </span>
+    <header>
+      <span class="message-title">
+        {{ message.user.username }}
+      </span>
+    </header>
+    <div message-body>
+      <span class="message-text">
+        {{ message.text }}
+      </span>
+      <span class="message-date">
+        {{ date | format }}
+      </span>
+      <span class="message-status">
+        
+      </span>
+    </div>
   </li>
 </template>
 
@@ -41,9 +48,24 @@ export default {
   padding: .75em;
   margin: .5em;
   align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  min-width: 96px;
+
+  header {
+    display: flex;
+    align-self: flex-start;
+    cursor: pointer;
+    font-weight: bold;
+  }
 
   &-date {
     font-size: 70%;
+  }
+
+  &-body {
+    display: flex;
+    justify-content: space-between;
   }
 }
 

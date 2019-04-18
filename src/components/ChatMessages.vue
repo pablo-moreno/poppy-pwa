@@ -1,12 +1,17 @@
 <template>
   <div class="chat-messages">
-    <div>
+    <div class="chat-messages-header">
       <h2>
         {{ chat.name }}
       </h2>
-      <span v-if="userWriting">
+      <div v-if="userWriting">
         {{ userWriting }} is writing...
-      </span>
+      </div>
+      <div v-else>
+        <span v-for="(user, i) in users" :key="`user-${i}`">
+          {{ user.username }}<span v-if="i < users.length - 1">, </span>
+        </span>
+      </div>
     </div>
     <ul class="chat-messages-list">
       <message v-for="(message, i) in chat.messages" :key="i" :message="message" />
@@ -58,7 +63,10 @@ export default {
     chat() {
       const [c] = this.$store.state.chats.filter(chat => chat.id === this.room)
       return c
-    }
+    },
+    users() {
+      return this.chat.users
+    },
   },
   methods: {
     sendMessage(text) {
@@ -109,8 +117,21 @@ ul {
   flex-direction: column;
   justify-content: space-between;
 
+  &-header {
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+      margin: .25em;
+    }
+  }
+
   &-list {
     height: 100%;
   }
+}
+
+.hidden {
+  visibility: hidden;
 }
 </style>
