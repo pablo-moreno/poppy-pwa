@@ -4,12 +4,19 @@
       <h2>
         {{ chat.name }}
       </h2>
+      <span v-if="userWriting">
+        {{ userWriting }} is writing...
+      </span>
     </div>
     <ul class="chat-messages-list">
       <message v-for="(message, i) in chat.messages" :key="i" :message="message" />
     </ul>
     <div class="new-message">
-      <chat-input @input="text => sendMessage(text)" />
+      <chat-input 
+        @input="text => sendMessage(text)"
+        @start-writing="startWriting"
+        @stop-writing="stopWriting"
+      />
     </div>
   </div>
 </template>
@@ -25,11 +32,24 @@ export default {
     room: {
       type: String,
       required: true
+    },
+  },
+  data() {
+    return {
+      userWriting: undefined
     }
   },
   components: {
     ChatInput,
     Message,
+  },
+  beforeMount() {
+    bus.$on('user-is-writing', this.userIsWriting)
+    bus.$on('user-stopped-writing', this.userStoppedWriting)
+  },
+  beforeDestroy() {
+    bus.$off('user-is-writing')
+    bus.$off('user-stopped-writing')
   },
   computed: {
     ...mapState({
@@ -49,6 +69,27 @@ export default {
       }
       bus.$emit('post-message', newMessage)
       this.text = ''
+    },
+    startWriting() {
+      bus.$emit('start-writing', {
+        id: this.user.id, 
+        username: this.user.username
+      }, this.room)
+    },
+    stopWriting() {
+      bus.$emit('stop-writing', {
+        id: this.user.id,
+        username: this.user.username
+      }, this.room)
+    },
+    userIsWriting(user, room) {
+      console.log('[chat-messages] User is writing', user, room)
+      const { username } = user
+      this.userWriting = username
+    },
+    userStoppedWriting() {
+      console.log('[chat-messages] User stopped writing')
+      this.userWriting = undefined
     }
   }
 }

@@ -4,7 +4,7 @@
       {{ message.text }}
     </span>
     <span class="message-date">
-      {{ message.creationDate }}
+      {{ date | format }}
     </span>
     <span class="message-status">
       
@@ -24,6 +24,9 @@ export default {
   computed: {
     mine() {
       return this.message.user.id === this.$store.state.auth.user.id
+    },
+    date() {
+      return new Date(parseInt(this.message.creationDate))
     }
   }
 }
@@ -38,6 +41,10 @@ export default {
   padding: .75em;
   margin: .5em;
   align-self: flex-start;
+
+  &-date {
+    font-size: 70%;
+  }
 }
 
 .mine {

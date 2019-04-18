@@ -20,6 +20,16 @@ io.on('new-user-connected', function() {
   bus.$emit('connection')
 })
 
+io.on('user-is-writing', function(user, room) {
+  console.log('[IO] user-is-writing', user, room)  
+  bus.$emit('user-is-writing', user, room)
+})
+
+io.on('user-stopped-writing', function(user, room) {
+  console.log('[IO] user-stopped-writing', user, room)  
+  bus.$emit('user-stopped-writing', user, room)
+})
+
 // Client-emitted events
 bus.$on('user-connected', function(user) {
   console.log('Request user connection')
@@ -41,10 +51,10 @@ bus.$on('unsubscribe', function(rooms) {
   io.emit('unsubscribe', rooms)
 })
 
-bus.$on('user-start-writing', function(user, room) {
-  io.emit('user-start-writing', user, room)
+bus.$on('start-writing', function(user, room) {
+  io.emit('start-writing', user, room)
 })
 
-bus.$on('user-stop-writing', function(user, room) {
-  io.emit('user-stop-writing', user, room)
+bus.$on('stop-writing', function(user, room) {
+  io.emit('stop-writing', user, room)
 })

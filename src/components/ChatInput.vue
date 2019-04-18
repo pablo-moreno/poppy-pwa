@@ -1,8 +1,13 @@
 <template>
   <form @submit.prevent="send">
     <div class="chat-input">
-      <input ref="chat-input" type="text" autocomplete="off" v-model="text" placeholder="Write your next awesome message :D">
-      <span @click="send"><i class="fa fa-paper-plane"></i></span>
+      <input ref="chat-input" type="text" autocomplete="off" v-model="text" 
+        placeholder="Write your next awesome message :D" 
+        v-delay-input="stopWriting"
+      >
+      <span @click="send">
+        <i class="fa fa-paper-plane" />
+      </span>
     </div>
   </form>
 </template>
@@ -18,6 +23,16 @@ export default {
     send() {
       this.$emit('input', this.text)
       this.text = ''
+    },
+    stopWriting() {
+      this.$emit('stop-writing')
+    }
+  },
+  watch: {
+    text(newValue, oldValue) {
+      if (newValue !== oldValue && oldValue === '') {
+        this.$emit('start-writing')
+      }
     }
   }
 }
