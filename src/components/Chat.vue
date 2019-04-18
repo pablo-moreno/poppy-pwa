@@ -1,13 +1,25 @@
 <template>
   <div class="chat">
     <div class="chat-list">
-      <user-header />
+      <user-header @change-panel="panel => changePanel(panel)" />
       <chat-list-view :chats="chats" @change-chat="chat => setCurrentChat(chat)" />
     </div>
-    <div class="chat-messages">
-      <chat-messages :room="currentRoom" v-if="currentRoom" />
-      <div v-if="!currentRoom">
-        You have not selected any chat!
+    <div class="chat-panel">
+      <div v-if="panel === 'chat'">
+        <chat-messages :room="currentRoom" v-if="currentRoom" />
+        <div v-if="!currentRoom">
+          You have not selected any chat!
+        </div>
+      </div>
+      <div v-else-if="panel === 'config'">
+        <div>
+          This is the config panel!
+        </div>
+      </div>
+      <div v-else-if="panel === 'friends'">
+        <div>
+          This is the friends panel!
+        </div>
       </div>
     </div>
   </div>
@@ -28,7 +40,8 @@ export default {
   },
   data() {
     return {
-      currentRoom: null
+      currentRoom: null,
+      panel: 'chat',
     }
   },
   computed: mapState({
@@ -55,7 +68,11 @@ export default {
   methods: {
     setCurrentChat(chat) {
       this.currentRoom = chat.id
+      this.panel = 'chat'
     },
+    changePanel(panel) {
+      this.panel = panel
+    }
   }
 }
 </script>
@@ -67,12 +84,14 @@ export default {
   width: 100vw;
 
   .chat-list {
-    width: 35%;
-    border-right: solid 1px #eaeaea;
+    width: 45%;
+    box-shadow: 2px 0 2px #dfdfdf;
+    z-index: 1;
   }
 
-  .chat-messages {
-    width: 65%;
+  .chat-panel {
+    width: 100%;
+    height: 100vh;
   }
 }
 </style>

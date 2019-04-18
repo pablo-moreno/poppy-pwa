@@ -27,7 +27,6 @@ export default {
   },
   methods: {
     async login() {
-      console.log('login')
       try {
         const { email, password } = this
         const user = await this.$http.post('auth/login', { email, password })

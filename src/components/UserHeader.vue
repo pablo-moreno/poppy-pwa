@@ -4,7 +4,10 @@
       {{ user.firstName }}
     </h2>
     <div class="user-header-buttons">
-      <button @click="logout" class="ripple">
+      <button @click="changePanel('friends')" class="ripple">
+        <i class="fa fa-user-friends"></i>
+      </button>
+      <button @click="changePanel('config')" class="ripple">
         <i class="fa fa-cog"></i>
       </button>
       <button @click="logout" class="ripple">
@@ -24,6 +27,12 @@ export default {
     logout() {
       this.$store.dispatch('logout')
       this.$router.push('login')
+    },
+    config() {
+      this.$emit('open-config')
+    },
+    changePanel(panel) {
+      this.$emit('change-panel', panel)
     }
   }
 }

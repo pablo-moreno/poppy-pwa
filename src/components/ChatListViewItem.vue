@@ -32,3 +32,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.chat-list-view-item {
+  cursor: pointer;
+  border-bottom: solid 1px #eaeaea;
+  padding: 1em;
+
+  &:hover {
+    background-color: #eaeaea;
+  }
+}
+</style>

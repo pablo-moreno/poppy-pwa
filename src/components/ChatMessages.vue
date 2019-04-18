@@ -1,23 +1,22 @@
 <template>
   <div class="chat-messages">
+    <div>
+      <h2>
+        {{ chat.name }}
+      </h2>
+    </div>
     <ul class="chat-messages-list">
-      <li v-for="(message, i) in chat.messages" :key="i">
-        <message :message="message" />
-      </li>
+      <message v-for="(message, i) in chat.messages" :key="i" :message="message" />
     </ul>
     <div class="new-message">
-      <form @submit.prevent="sendMessage">
-        <input type="text" name="new-message" id="new-message" v-model="text">
-        <button>
-          Send
-        </button>
-      </form>
+      <chat-input @input="text => sendMessage(text)" />
     </div>
   </div>
 </template>
 
 <script>
 import bus from '../EventBus'
+import ChatInput from './ChatInput'
 import Message from './Message'
 import { mapState } from 'vuex'
 
@@ -29,12 +28,8 @@ export default {
     }
   },
   components: {
+    ChatInput,
     Message,
-  },
-  data() {
-    return {
-      text: '',
-    }
   },
   computed: {
     ...mapState({
@@ -46,9 +41,9 @@ export default {
     }
   },
   methods: {
-    sendMessage() {
+    sendMessage(text) {
       const newMessage = { 
-        text: this.text,
+        text,
         user: this.user,
         room: this.room
       }
@@ -60,5 +55,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+ul {
+  display: flex;
+  flex-direction: column;
+  background-color: #eaeaea;
+}
 
+.chat-messages {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &-list {
+    height: 100%;
+  }
+}
 </style>

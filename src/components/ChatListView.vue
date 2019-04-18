@@ -22,14 +22,16 @@ export default {
   },
   methods: {
     changeRoom(chat) {
-      console.log('changed chat', chat)
       this.$emit('change-chat', chat)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+
 ul {
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 </style>
