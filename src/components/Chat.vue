@@ -5,7 +5,7 @@
       <chat-list-view :chats="chats" @change-chat="chat => setCurrentChat(chat)" />
     </div>
     <div class="chat-panel">
-      <div v-if="panel === 'chat'">
+      <div style="height: 100vh" v-if="panel === 'chat'">
         <chat-messages :room="currentRoom" v-if="currentRoom" />
         <div v-if="!currentRoom">
           You have not selected any chat!

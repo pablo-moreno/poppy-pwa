@@ -68,6 +68,9 @@ export default {
       return this.chat.users
     },
   },
+  created() {
+    this.getChatMessages()
+  },
   methods: {
     sendMessage(text) {
       const newMessage = { 
@@ -77,6 +80,10 @@ export default {
       }
       bus.$emit('post-message', newMessage)
       this.text = ''
+    },
+    async getChatMessages() {
+      const messages = await this.$http.get(`rooms/${this.room}/messages`)
+      console.log('messages', messages)
     },
     startWriting() {
       bus.$emit('start-writing', {
@@ -93,7 +100,10 @@ export default {
     userIsWriting(user, room) {
       console.log('[chat-messages] User is writing', user, room)
       const { username } = user
-      this.userWriting = username
+
+      if (room === this.room) {
+        this.userWriting = username
+      }
     },
     userStoppedWriting() {
       console.log('[chat-messages] User stopped writing')
@@ -108,6 +118,9 @@ ul {
   display: flex;
   flex-direction: column;
   background-color: #eaeaea;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  box-sizing: border-box;
 }
 
 .chat-messages {
