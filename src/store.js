@@ -7,8 +7,9 @@ const vuexPersist = new VuexPersist({
   storage: localStorage,
 
   // Persistance reducer
-  reducer: state => ({
-    auth: state.auth
+  reducer: ({ auth, chats }) => ({
+    auth,
+    chats,
   })
 })
 
@@ -45,6 +46,15 @@ export default new Vuex.Store({
         chat,
         ...state.chats.filter(c => c.id !== room),
       ]
+    },
+    addMessages(state, { room, messages }) {
+      const [chat] = state.chats.filter(c => c.id === room)
+      chat.messages = [...messages, ...chat.messages]
+
+      state.chats = [
+        chat,
+        ...state.chats.filter(c => c.id !== room),
+      ]
     }
   },
   actions: {
@@ -59,6 +69,9 @@ export default new Vuex.Store({
     },
     addMessage({ commit }, message) {
       commit('addMessage', message)
+    },
+    addMessages({ commit }, { room, messages }) {
+      commit('addMessages', { room, messages })
     }
   },
   plugins: [

@@ -13,7 +13,7 @@
         </span>
       </div>
     </div>
-    <ul class="chat-messages-list">
+    <ul class="chat-messages-list" ref="the-chat">
       <message v-for="(message, i) in chat.messages" :key="i" :message="message" />
     </ul>
     <div class="new-message">
@@ -41,7 +41,8 @@ export default {
   },
   data() {
     return {
-      userWriting: undefined
+      userWriting: undefined,
+      ul: undefined
     }
   },
   components: {
@@ -68,8 +69,22 @@ export default {
       return this.chat.users
     },
   },
+  watch: {
+    room(prev, next) {
+      this.getChatMessages()
+    }
+  },
+  mounted() {
+    console.log('mount')
+    this.ul = this.$refs['the-chat']
+    bus.$on('scroll-down', () => this.scrollDown())
+    this.scrollDown()
+  },
   created() {
     this.getChatMessages()
+  },
+  destroy() {
+    bus.$off('scroll-down')
   },
   methods: {
     sendMessage(text) {
@@ -82,8 +97,12 @@ export default {
       this.text = ''
     },
     async getChatMessages() {
-      const messages = await this.$http.get(`rooms/${this.room}/messages`)
-      console.log('messages', messages)
+      if (this.chat.messages.length === 0) {
+        const messages = await this.$http.get(`rooms/${this.room}/messages`)
+        this.$store.dispatch('addMessages', {room: this.room, messages }).then(() => {
+          this.scrollDown()
+        })
+      }
     },
     startWriting() {
       bus.$emit('start-writing', {
@@ -108,6 +127,9 @@ export default {
     userStoppedWriting() {
       console.log('[chat-messages] User stopped writing')
       this.userWriting = undefined
+    },
+    scrollDown() {
+      this.ul.scrollTop = this.ul.scrollHeight
     }
   }
 }

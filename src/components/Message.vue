@@ -19,10 +19,10 @@ export default {
       type: Object,
       required: true,
     }
-  },
+	},
   computed: {
     mine() {
-      return this.message.user.id === this.$store.state.auth.user.id
+      return this.message.user.username === this.$store.state.auth.user.username
     },
     date() {
       return new Date(parseInt(this.message.creationDate))

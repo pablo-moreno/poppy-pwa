@@ -1,5 +1,5 @@
 import axios from 'axios'
-import store from '@/store'
+import store from '../store'
 
 axios.defaults.headers['Access-Control-Allow-Origin'] = '*'
 axios.defaults.headers.common.Accept = 'application/json'
@@ -64,7 +64,7 @@ export class BaseHttp {
   _makeAxiosConfig(method, url, { data = {}, params = {}, extraConfig = {}, headers = {}, token = ''}) {
     let newHeaders = headers
     if (token) {
-      newHeaders = { ...headers, Authorization: `${this.HTTP_AUTHORIZATION_HEADER} ${token}` }
+      newHeaders = { ...headers, 'x-auth': token }
     }
 
     return { method, url, params, data, headers: newHeaders, ...extraConfig }
@@ -104,12 +104,40 @@ export class BaseHttp {
     }
   }
 
+  getBaseUrl() {
+    return this.API_URL
+  }
+}
+
+export default class Http extends BaseHttp {
+  BASE_URL = process.env.VUE_APP_BASE_URL
+  API_URL = `${process.env.VUE_APP_API_URL}:${process.env.VUE_APP_HTTP_PORT}`
+  HTTP_AUTHORIZATION_HEADER = 'x-auth'
+  LOGIN_URL = `${this.API_URL}/auth/login`
+  SIGN_UP_URL = `${this.API_URL}/auth/sign-up`
+  CHANGE_PASSWORD_URL = `${this.API_URL}/auth/password/change`
+  GET_ME = `${this.API_URL}/auth/me`
+  RESET_PASSWORD = `${this.API_URL}/auth/password/reset`
+
+  getToken() {
+    return store.state.auth.user ? store.state.auth.user.token : ''
+  }
+
+  handleError(error) {
+    if (error.response && error.response.status === 401) {
+      // store.dispatch('logout')
+    }
+  }
+
   /**
    * Gets a specified item
    * @param {Object} item
    */
-  async get(resource, id) {
-    const options = { token: this.getToken() }
+  async get(resource, id, params) {
+    const options = {
+      token: this.getToken(),
+      params
+    }
     const url = this.getUrl(resource, id)
 
     return this.request('GET', url, options)
@@ -147,32 +175,6 @@ export class BaseHttp {
     const url = this.getUrl(resource, id)
 
     return this.request('DELETE', url, options)
-  }
-
-  getBaseUrl() {
-    return this.API_URL
-  }
-}
-
-export default class Http extends BaseHttp {
-  BASE_URL = process.env.VUE_APP_BASE_URL
-  API_URL = `${process.env.VUE_APP_API_URL}:${process.env.VUE_APP_HTTP_PORT}`
-  HTTP_AUTHORIZATION_HEADER = 'x-auth'
-  LOGIN_URL = `${this.API_URL}/auth/login`
-  SIGN_UP_URL = `${this.API_URL}/auth/sign-up`
-  CHANGE_PASSWORD_URL = `${this.API_URL}/auth/password/change`
-  GET_ME = `${this.API_URL}/auth/me`
-  RESET_PASSWORD = `${this.API_URL}/auth/password/reset`
-
-  getToken() {
-    const { token } = store.state.auth
-    return token
-  }
-
-  handleError(error) {
-    if (error.response && error.response.status === 401) {
-      store.dispatch('logout')
-    }
   }
 
   /**

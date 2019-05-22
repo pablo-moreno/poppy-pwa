@@ -58,7 +58,9 @@ export default {
 
     bus.$on('new-message', (message) => {
       console.log('We have received a new message', message)
-      this.$store.dispatch('addMessage', message)
+      this.$store.dispatch('addMessage', message).then(() => {
+        bus.$emit('scroll-down')
+      })
     })
   },
   beforeDestroy() {

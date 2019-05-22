@@ -31,6 +31,7 @@ export default {
         const { email, password } = this
         const user = await this.$http.post('auth/login', { email, password })
         this.$store.dispatch('login', user)
+        this.$http.setToken(user.token)
         this.$router.push({ name:'home' })
       } catch (error) {
         this.error = error.message
